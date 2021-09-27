@@ -15,6 +15,7 @@ import { parseUrl, stringify } from 'query-string';
 
 function Scanner() {
 
+    const version = 'v0.2';
     const [result, setResult] = useState('');
     const [delay, setDelay] = useState( 1000 );
     const [showQR, setshowQR] = useState( false );
@@ -109,7 +110,7 @@ function Scanner() {
                     {/*    <Menu />*/}
                     {/*</IconButton>*/}
                     <Typography variant="h6" color="inherit" component="div">
-                        Event Tickets Scanner
+                        Event Tickets Scanner {version}
                     </Typography>
                 </Toolbar>
             </AppBar>
