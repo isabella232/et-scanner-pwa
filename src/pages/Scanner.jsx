@@ -8,8 +8,7 @@ import {
     TextField,
     Toolbar,
     Typography,
-    IconButton,
-    makeStyles
+    IconButton
 } from '@material-ui/core';
 import QrReader from 'react-qr-reader';
 import { parseUrl, stringify } from 'query-string';
@@ -45,12 +44,16 @@ function Scanner() {
         setshowQR( ! showQR );
     };
 
+    let validApi = () => {
+        return api.length > 6;
+    }
+
    useEffect( () => {
        if ( ! api ) {
            return;
        }
 
-       if ( api.length > 5 ) {
+       if ( validApi() ) {
            setshowQR(true);
            localStorage.setItem( 'api_key', api );
        } else {
@@ -88,9 +91,6 @@ function Scanner() {
                        setResult( 'Invalid API Key!' );
                    }
                },
-               // Note: it's important to handle errors here
-               // instead of a catch() block so that we don't swallow
-               // exceptions from actual bugs in components.
                (error) => {
                    console.log( error );
                    setResult( 'Event website is not reachable!' );
@@ -100,7 +100,7 @@ function Scanner() {
 
     return (
         <Container maxWidth='sm'>
-            <AppBar position="static">
+            <AppBar position="static" color={"primary"}>
                 <Toolbar variant="dense">
                     {/*<IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>*/}
                     {/*    <Menu />*/}
@@ -134,10 +134,11 @@ function Scanner() {
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
-                rowSpacing={5}
                 columnspacing={100}
             >
+                {showQR &&
                 <h2> Scan Ticket </h2>
+                }
                 { showQR &&
                 <QrReader
                     delay={delay}
@@ -149,8 +150,8 @@ function Scanner() {
 
                 <h3>{result}</h3>
 
-                { !showQR &&
-                    <Button variant="contained" onClick={reScan}> Scan again </Button>
+                { ( !showQR && validApi() ) &&
+                    <Button color={"primary"} variant="contained" onClick={reScan}> Scan again </Button>
                 }
             </Grid>
         </Container>
