@@ -4,10 +4,25 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { createTheme, ThemeProvider } from "@material-ui/core";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: "#334AFF"
+        },
+        secondary: {
+            main: "#141827"
+        }
+    },
+    // fontFamily: font
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
