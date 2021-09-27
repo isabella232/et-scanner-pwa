@@ -45,7 +45,11 @@ function Scanner() {
     };
 
     let validApi = () => {
-        return api.length > 6;
+        if ( api ) {
+            return api.length > 6;
+        }
+
+        return false;
     }
 
    useEffect( () => {

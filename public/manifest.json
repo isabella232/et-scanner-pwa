@@ -1,6 +1,7 @@
 {
   "short_name": "Event Tickets Scanner",
   "name": "Event Tickets Scanner progressive web App.",
+  "version": "0.1.1",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +9,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "et-logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "et-logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
