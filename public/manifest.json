@@ -1,7 +1,7 @@
 {
   "short_name": "Event Tickets Scanner",
-  "name": "Event Tickets Scanner progressive web App.",
-  "version": "0.1.1",
+  "name": "Event Tickets Scanner PWA (alpha build). ",
+  "version": "0.2",
   "icons": [
     {
       "src": "favicon.ico",

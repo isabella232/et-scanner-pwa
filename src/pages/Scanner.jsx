@@ -29,9 +29,8 @@ function Scanner() {
     let handleScan = data => {
         if (data) {
             setResult( 'Loading...' );
-            setDelay(false);
             setshowQR(false);
-            scanTicket( data );
+            scanTicket(data);
         }
     };
 
@@ -40,8 +39,8 @@ function Scanner() {
     };
 
     let reScan = () => {
-        setDelay( 1000 );
         setshowQR( ! showQR );
+        setResult( '' );
     };
 
     let validApi = () => {
