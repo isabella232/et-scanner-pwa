@@ -14,7 +14,7 @@ import Attendee from "./Attendee";
 
 function Scanner() {
 
-    const version = 'v0.2';
+    const version = 'v0.3';
     const [result, setResult] = useState('');
     const [delay, setDelay] = useState( 1000 );
     const [showQR, setshowQR] = useState( false );
