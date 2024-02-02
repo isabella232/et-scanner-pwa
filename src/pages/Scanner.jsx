@@ -4,14 +4,13 @@ import {
     Button,
     Container,
     Grid,
-    Menu,
     TextField,
     Toolbar,
     Typography,
-    IconButton
 } from '@material-ui/core';
 import QrReader from 'react-qr-reader';
 import { parseUrl, stringify } from 'query-string';
+import Attendee from "./Attendee";
 
 function Scanner() {
 
@@ -19,6 +18,8 @@ function Scanner() {
     const [result, setResult] = useState('');
     const [delay, setDelay] = useState( 1000 );
     const [showQR, setshowQR] = useState( false );
+    const [showInfo, setshowInfo] = useState( false );
+    const [attendeeData, setattendeeData] = useState({});
 
     const stored_api = typeof localStorage.getItem( 'api_key' ) !== 'undefined' ? localStorage.getItem( 'api_key' ) : '';
     const [api, setApi] = useState( stored_api );
@@ -42,6 +43,7 @@ function Scanner() {
     let reScan = () => {
         setshowQR( ! showQR );
         setResult( '' );
+        setshowInfo( false );
     };
 
     let validApi = () => {
@@ -88,18 +90,32 @@ function Scanner() {
            .then(res => res.json())
            .then(
                (result) => {
-                   console.log( result );
-                   if ( result.msg ) {
-                       setResult( result.msg );
-                   } else {
-                       setResult( 'Invalid API Key!' );
-                   }
+                   processResult( result );
                },
                (error) => {
                    console.log( error );
                    setResult( 'Event website is not reachable!' );
                }
            )
+   }
+
+   let processResult = ( responseData ) => {
+
+        console.log( responseData );
+       if ( responseData.msg ) {
+           setResult( responseData.msg );
+       } else {
+           setResult( 'Invalid API Key!' );
+       }
+       if ( responseData.attendee ) {
+           setshowInfo(true);
+           setattendeeData( {
+               'title' : responseData.attendee.title,
+               'email' : responseData.attendee.email,
+               'ticket' : responseData.attendee.ticket.title,
+               'information': responseData.attendee.information ?? '',
+           } )
+       }
    }
 
     return (
@@ -132,6 +148,16 @@ function Scanner() {
                         onChange={(e) => setApi(e.target.value)}
                     />
                 </Grid>
+            </Grid>
+            <Grid container
+                  direction="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  columnspacing={100}
+            >
+                { ( ! showQR && showInfo ) &&
+                    <Attendee attendeeData={attendeeData} />
+                }
             </Grid>
             <Grid
                 container
