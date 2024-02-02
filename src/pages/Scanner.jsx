@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
     AppBar,
-    Button,
+    Button, CircularProgress,
     Container,
     Grid,
     TextField,
@@ -20,6 +20,8 @@ function Scanner() {
     const [showQR, setshowQR] = useState( false );
     const [showInfo, setshowInfo] = useState( false );
     const [attendeeData, setattendeeData] = useState({});
+    const [loader, setLoader] = useState( false );
+    const [apiInput, setApiInput] = useState( true );
 
     const stored_api = typeof localStorage.getItem( 'api_key' ) !== 'undefined' ? localStorage.getItem( 'api_key' ) : '';
     const [api, setApi] = useState( stored_api );
@@ -30,8 +32,9 @@ function Scanner() {
 
     let handleScan = data => {
         if (data) {
-            setResult( 'Loading...' );
+            setLoader(true);
             setshowQR(false);
+            setApiInput(false);
             scanTicket(data);
         }
     };
@@ -44,6 +47,7 @@ function Scanner() {
         setshowQR( ! showQR );
         setResult( '' );
         setshowInfo( false );
+        setApiInput( true );
     };
 
     let validApi = () => {
@@ -90,18 +94,17 @@ function Scanner() {
            .then(res => res.json())
            .then(
                (result) => {
+                   setLoader(false);
                    processResult( result );
                },
                (error) => {
-                   console.log( error );
+                   setLoader(false);
                    setResult( 'Event website is not reachable!' );
                }
            )
    }
 
    let processResult = ( responseData ) => {
-
-        console.log( responseData );
        if ( responseData.msg ) {
            setResult( responseData.msg );
        } else {
@@ -139,15 +142,19 @@ function Scanner() {
                 spacing={5}
                 style={gridStyle}
             >
-                <Grid item sm>
-                    <TextField
-                        id="outlined-basic"
-                        label="API Key"
-                        variant="outlined"
-                        value={api}
-                        onChange={(e) => setApi(e.target.value)}
-                    />
-                </Grid>
+                { loader && <CircularProgress /> }
+
+                { apiInput &&
+                    <Grid item sm>
+                        <TextField
+                            id="outlined-basic"
+                            label="API Key"
+                            variant="outlined"
+                            value={api}
+                            onChange={(e) => setApi(e.target.value)}
+                        />
+                    </Grid>
+                }
             </Grid>
             <Grid container
                   direction="column"
